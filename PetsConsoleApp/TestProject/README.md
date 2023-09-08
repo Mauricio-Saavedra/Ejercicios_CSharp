@@ -32,3 +32,14 @@ Al presionar un número de 1 al 8 se accede a la opción señalada, si el usuari
 6. Permite editar la personalidad/caracter de un candidato ingresando su ID, también te muestra el nombre del mismo apra evitar el error de editar alguien por error, ya que solemos identificar más por nombre que por código.
 7. Permite realizar una busqueda por un rasgo, si hay un gato con 'x' caracteristica te dirá cual la tiene, si no, solo pregunta si quieres hacer otra busqueda.
 8. Permite realizar una busqueda por un rasgo, si hay un perro con 'x' caracteristica te dirá cual la tiene, si no, solo pregunta si quieres hacer otra busqueda.
+
+## Versión 0.2.0
+
+Añadidos de la versión
+
+1. Ahora en esta versión tanto en las opciones 7 y 8 se pueden introducir más de un caracter para la búsqueda de una caracteristica, ya sea física o de carácter.
+2. Se ha añadido una animación durante el proceso de búsqueda por cuestiones ésteticas.
+3. Se han añadido medidas de seguridad para evitar que se haga una búsqueda con carácters nulos.
+4. Se ha añadido un área más a las mascotas, llamada `Donación sugerida`.
+    - Ésta opción es una variable `String` que se convierte en `decimal` y se formatea conn el símbolo de la moneda de la región.
+    - Si no se ingresa ningún valor, se establece uno por defecto.

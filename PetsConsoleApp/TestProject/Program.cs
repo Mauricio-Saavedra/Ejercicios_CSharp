@@ -1,22 +1,24 @@
-﻿using System;
+using System;
 
-// Datos que se guardaran en la matriz:
+// Datos que se guardaran en la matriz:  
 string animalSpecies = "";
 string animalID = "";
 string animalAge = "";
 string animalPhysicalDescription = "";
 string animalPersonalityDescription = "";
 string animalNickname = "";
+string suggestedDonation = "";
 
 // Variables que respaldan al entrada de datos:
-int maxPets = 8;
+int maxPets = 10;
 string? readResult; // ^
 string menuSelection = "";
+decimal cantidadDonacion = 0.00m;
 
 // ^Cuando se usa en una declaración de variable como esta, el carácter ? define una variable de tipo que acepta valores NULL.
 
 // Matriz que almacena datos en tiempo de ejecución, estos datos no persisten si el programa finaliza
-string[,] ourAnimals = new string[maxPets, 6];
+string[,] ourAnimals = new string[maxPets, 7];
 /* ^
 La variable final es una matriz de cadenas bidimensional denominada ourAnimals.
 Puesto que no está inicializando la matriz, use el operador new. El número de filas se define mediante maxPets,
@@ -25,44 +27,48 @@ las variables de cadena que ha examinado anteriormente.
 */
 
 // Creamos unos datos iniciales para almacenar
-for (int i = 0; i < maxPets; i++)   //-> Se crea el bucle 'for' que aumenta en 1 hasta 6.
+for (int i = 0; i < maxPets; i++)   //-> Se crea el bucle 'for' que aumenta en 1 hasta 6 -> Ahora 7.
 {
     switch (i)      //-> Cada vez que 'i' pasa por el switch se verifica un caso...
     {
         case 0:
-            animalSpecies = "perro";
-            animalID = "p1";
+            animalSpecies = "dog";
+            animalID = "d1";
             animalAge = "2";
-            animalPhysicalDescription = "tamaño mediano, color crema, hembra, golden retriever, peso 30kg aprox, domesticado.";
-            animalPersonalityDescription = "ama las caricias en la barriga, le gusta perseguir su cola, dar muchos besos.";
+            animalPhysicalDescription = "hembra, mediana, color crema, chawchaw, 15kg. domesticada.";
+            animalPersonalityDescription = "loves to have her belly rubbed and likes to chase her tail. gives lots of kisses.";
             animalNickname = "lola";
+            suggestedDonation = "85.00";
             break;
 
         case 1:
-            animalSpecies = "perro";
-            animalID = "p2";
+            animalSpecies = "dog";
+            animalID = "d2";
             animalAge = "9";
-            animalPhysicalDescription = "grande, marron, macho, pitbull, pesa 25kg aprox, domesticado.";
-            animalPersonalityDescription = "ama las caricias en sus orejitas cuando te recibe en la puerta, o a cualqueir hora, ama comer salchichas y los abrazos.";
+            animalPhysicalDescription = "golden retriever macho cafe rojizo 38kg. domesticado.";
+            animalPersonalityDescription = "ama las caricias en las orejas cuando espera en la peurta, o a cualquier hora! ama dar abrazos.";
             animalNickname = "loki";
+            suggestedDonation = "60.50";
             break;
 
         case 2:
-            animalSpecies = "gato";
-            animalID = "g3";
+            animalSpecies = "cat";
+            animalID = "c3";
             animalAge = "1";
-            animalPhysicalDescription = "mediano, hembra, pesa 8kg aprox, domesticada.";
-            animalPersonalityDescription = "amigable, cariñoso, le gusta el jamón y dormir bajo el sol.";
-            animalNickname = "wero";
+            animalPhysicalDescription = "pequeña, hembra, blanca, 4kg. sabe usar arenero.";
+            animalPersonalityDescription = "amistoso";
+            animalNickname = "Flan";
+            suggestedDonation = "59.99";
             break;
 
         case 3:
-            animalSpecies = "gato";
-            animalID = "g4";
+            animalSpecies = "cat";
+            animalID = "c4";
             animalAge = "?";
             animalPhysicalDescription = "";
             animalPersonalityDescription = "";
             animalNickname = "";
+            suggestedDonation = "";
             break;
 
         default:
@@ -72,6 +78,7 @@ for (int i = 0; i < maxPets; i++)   //-> Se crea el bucle 'for' que aumenta en 1
             animalPhysicalDescription = "";
             animalPersonalityDescription = "";
             animalNickname = "";
+            suggestedDonation = "";
             break;
             /* ^
             Recuerde que la ejecución de una sección switch no puede "pasar" a la siguiente sección switch.
@@ -86,6 +93,11 @@ for (int i = 0; i < maxPets; i++)   //-> Se crea el bucle 'for' que aumenta en 1
     ourAnimals[i, 3] = "Mote: " + animalNickname;
     ourAnimals[i, 4] = "Description física: " + animalPhysicalDescription;
     ourAnimals[i, 5] = "Carácter: " + animalPersonalityDescription;
+
+    if (!decimal.TryParse(suggestedDonation, out cantidadDonacion)){
+        cantidadDonacion = 20.00m; //Si la cantidadDonación NO es un número, se pone por default 20.00
+    }
+    ourAnimals[i, 6] = "Donación sugerida: " + $"{cantidadDonacion:C}";
 }
 
 do  //-> Ahora se crea un bucle 'do while', que se acaba hasta que el usuario ingresa 'exit'.
@@ -93,6 +105,7 @@ do  //-> Ahora se crea un bucle 'do while', que se acaba hasta que el usuario in
     // Muestra en pantalla las opciones del menu:
     //-> Cada vez que se ejecuta empieza por limpiar la consola 
     Console.Clear();
+
     Console.WriteLine("Bienvenido a FindPets, elige una opción de nuestro menú principal:");
     Console.WriteLine(" 1. Lista todos los animales con su información.");
     Console.WriteLine(" 2. Añade un candidato a mascora a nuestra matriz.");
@@ -100,10 +113,11 @@ do  //-> Ahora se crea un bucle 'do while', que se acaba hasta que el usuario in
     Console.WriteLine(" 4. Corrobora que sus motes y personalidad esten completos.");
     Console.WriteLine(" 5. Edita la edad de un candidato.");
     Console.WriteLine(" 6. Edita la personalidad de un candidato.");
-    Console.WriteLine(" 7. Muestra todos los gatos con una caracteristica espeifica.");
-    Console.WriteLine(" 8. Muestra todos los perros con una caracteristica espeifica.");
+    Console.WriteLine(" 7. Muestra todos los gatos con una caracteristica especifica.");
+    Console.WriteLine(" 8. Muestra todos los perros con una caracteristica especifica.");
     Console.WriteLine();
-    Console.WriteLine("Ingresa el número de tu selección (o escribe 'exit' para salir).)");
+
+    Console.Write("Ingresa el número de tu selección (o escribe 'exit' para salir): ");
 
     //-> Se lee lo que el usuario ingresa a la terminal
     readResult = Console.ReadLine();
@@ -133,7 +147,7 @@ do  //-> Ahora se crea un bucle 'do while', que se acaba hasta que el usuario in
                 if (ourAnimals[i, 0] != "ID #: ")   // Si nuestra matriz->ourAnimals es diferente de "ID #:", ésto porque ID 0 y (i=0) no deben encontrarse, supongo.
                 {
                     Console.WriteLine();
-                    for (int j = 0; j < 6; j++)
+                    for (int j = 0; j < 7; j++)
                     {
                         Console.WriteLine(ourAnimals[i, j]);
                         /*
@@ -152,7 +166,7 @@ do  //-> Ahora se crea un bucle 'do while', que se acaba hasta que el usuario in
             // Añadiendo un nuevo animalito a la matriz:
             string anotherPet = "y";    // Se declara la variable 'anotherPet' = 'y'
             int petCount = 0;          // declaramos una variable numérica 'petCount' = 0
-            for (int i = 0; i < maxPets; i++)  // Iniciamos un for que se recorrerá 8 veces
+            for (int i = 0; i < maxPets; i++)  // Iniciamos un for que se recorrerá 10 veces
             {
                 if (ourAnimals[i, 0] != "ID #: ") //Hacemos un checking de el ID
                 {
@@ -175,13 +189,13 @@ do  //-> Ahora se crea un bucle 'do while', que se acaba hasta que el usuario in
                 //Obtenemos la especie de la mascota - El string 'animalSpecies' es un campo requerido.
                 do  //Bucle 'do while' para verificar que se haya introducido la especie, no avanzará mientras la entrada de especie no sea True.
                 {
-                    Console.WriteLine("\n\rIngresa 'perro' o 'gato' para comenzar una nueva entrada");
-                    readResult = Console.ReadLine().ToLower();
+                    Console.Write("\n\rIngresa 'dog' o 'cat' para comenzar una nueva entrada: ");
+                    readResult = Console.ReadLine();
                     if (readResult != null) //Si la entrada del usuario no es nula pasamos al siguiente stage:
                     {
                         animalSpecies = readResult.ToLower();   //Se guarda lo ingresado en su variable en minusculas.
                     //Si 'animalSpecies' no es un gato o un perro entonces 
-                        if (animalSpecies != "perro" && animalSpecies != "gato")
+                        if (animalSpecies != "dog" && animalSpecies != "cat")
                         {
                             //Console.WriteLine($"You entered: {animalSpecies}.");
                             validEntry = false;
@@ -192,7 +206,7 @@ do  //-> Ahora se crea un bucle 'do while', que se acaba hasta que el usuario in
                         }
                     }
                 } while (validEntry == false);
-// zzzzzzzz
+
                 // Construimos el animal con su id - por ejemplo C1 =cat1, D2 =dog2
                 animalID = animalSpecies.Substring(0, 1) + (petCount + 1).ToString();
                 /*
@@ -206,7 +220,7 @@ do  //-> Ahora se crea un bucle 'do while', que se acaba hasta que el usuario in
                 do
                 {
                     int petAge;
-                    Console.WriteLine("Ingresa la edad de la mascota, puedes poner '?' si no la sabes en este momento.");
+                    Console.Write("Ingresa la edad de la mascota, puedes poner '?' si no la sabes: ");
                     readResult = Console.ReadLine();
                     if (readResult != null)
                     {
@@ -227,8 +241,8 @@ do  //-> Ahora se crea un bucle 'do while', que se acaba hasta que el usuario in
                 // Iniciamos otro bucle 'do while' para la descripción física del animalito, también puede ser un null.
                 do
                 {
-                    Console.WriteLine("Ingresa la descripción física de la mascota (genero, tamaño, color, peso, si esta domesticado, etc.)");
-                    readResult = Console.ReadLine().ToLower();
+                    Console.WriteLine("Ingresa al adescripción física de la mascota (genero, tamaño, color, peso, si esta domesticado)");
+                    readResult = Console.ReadLine();
                     if (readResult != null)
                     {
                         animalPhysicalDescription = readResult.ToLower();
@@ -243,7 +257,7 @@ do  //-> Ahora se crea un bucle 'do while', que se acaba hasta que el usuario in
                 do
                 {
                     Console.WriteLine("Ingresa la descripción del caracter del animalito (que le gusta y disgusta, trucos, nivel de energía)");
-                    readResult = Console.ReadLine().ToLower();
+                    readResult = Console.ReadLine();
                     if (readResult != null)
                     {
                         animalPersonalityDescription = readResult.ToLower();
@@ -257,8 +271,8 @@ do  //-> Ahora se crea un bucle 'do while', que se acaba hasta que el usuario in
                 // Otro más para el mote, también puede ser bulo.
                 do
                 {
-                    Console.WriteLine("Ingresa un Mote para la mascota:");
-                    readResult = Console.ReadLine().ToLower();
+                    Console.Write("Enter a nickname for the pet: ");
+                    readResult = Console.ReadLine();
                     if (readResult != null)
                     {
                         animalNickname = readResult.ToLower();
@@ -284,7 +298,7 @@ do  //-> Ahora se crea un bucle 'do while', que se acaba hasta que el usuario in
                 if (petCount < maxPets)
                 {
                     // Añadir otro registro?
-                    Console.WriteLine("Quieres añadir otra mascota al registro (y/n)");
+                    Console.Write("Quieres añadir otra mascota al registro (y/n) -> ");
                     do  //Éste bucle solo puede acabar con un 'y' o un 'n' cómo respuestas validas.
                     {
                         readResult = Console.ReadLine();
@@ -319,7 +333,6 @@ do  //-> Ahora se crea un bucle 'do while', que se acaba hasta que el usuario in
                 {
                     Console.WriteLine($"La mascota <{ourAnimals[i, 0]}> No tiene descripción de su estado físico.");
                 }
-                Console.WriteLine();
             }
 
             Console.WriteLine("Presiona 'Enter' para  continuar.");
@@ -337,7 +350,6 @@ do  //-> Ahora se crea un bucle 'do while', que se acaba hasta que el usuario in
                 {
                     Console.WriteLine($"La mascota <{ourAnimals[i, 0]}> No tiene descripción de su Caracter");
                 }
-                Console.WriteLine();
             }
 
             Console.WriteLine("Press the Enter key to continue.");
@@ -347,30 +359,37 @@ do  //-> Ahora se crea un bucle 'do while', que se acaba hasta que el usuario in
         case "5":   // Editar la edad
             // Información de la edad -> ourAnimals[i, 2] = "Edad: " + animalAge;
             bool seguirEditandoEdad = true;
-            string continuar = "";
+            string? continuar = "";
             string candidatoID = "";
             string newEdad = "";
 
             do
             {
                 //Primero voy a pedirle a usuario que ingrese el ID del animal a editar la edad:
-                Console.WriteLine("Ingresa el 'ID #: ', del canditato al cual se le editara la edad: '");
-                candidatoID = "ID #: " + Console.ReadLine().ToLower();
+                Console.Write("Ingresa el 'ID #: ', del canditato al cual se le editara la edad: ");
+                candidatoID = "ID #: " + Console.ReadLine();
 
-                for (int i = 0; i < maxPets; i++ )
+                if (candidatoID != "ID #: ")
                 {
-                    if (ourAnimals[i,0] == candidatoID)
+                    for (int i = 0; i < maxPets; i++ )
                     {
-                        string valorCompleto = ourAnimals[i,3];
-                        string valorSinPrefijo = valorCompleto.Substring(6); // 6 es la longitud de "Mote: "
-                        Console.WriteLine($"Favor de indicar la edad correcta de {valorSinPrefijo}: ");
-                        newEdad = "Edad: " + Console.ReadLine().ToLower();
-                        ourAnimals[i,2] = newEdad;
+                        if (ourAnimals[i,0] == candidatoID)
+                        {
+                            string valorCompleto = ourAnimals[i,3];
+                            string valorSinPrefijo = valorCompleto.Substring(6); // 6 es la longitud de "Mote: "
+                            Console.Write($"Favor de indicar la edad correcta de {valorSinPrefijo}: ");
+                            newEdad = "Edad: " + Console.ReadLine();
+                            ourAnimals[i,2] = newEdad;
+                        }
                     }
                 }
+                else
+                {
+                    Console.WriteLine($"\nFavor de ingresar un ID válido.");
+                }
 
-                Console.WriteLine("¿Quieres editar la edad de otro candidato? (y/n)");
-                continuar = Console.ReadLine().ToLower();
+                Console.Write("¿Quieres editar la edad de otro candidato? (y/n) -> ");
+                continuar = Console.ReadLine();
                 if (continuar == "n")
                 {
                     seguirEditandoEdad = false;
@@ -384,30 +403,37 @@ do  //-> Ahora se crea un bucle 'do while', que se acaba hasta que el usuario in
         case "6":   // Editar la personalidad
             // Información de la personalidad -> ourAnimals[i, 5] = "Carácter: " + animalPersonalityDescription;
             bool seguirEditandoCaracter = true;
-            string continuarinCatacter = "";
+            string? continuarinCatacter = "";
             string candidatoIDinCaracter = "";
             string newCaracter = "";
 
             do
             {
                 //Primero voy a pedirle a usuario que ingrese el ID del animal a editar la edad:
-                Console.WriteLine("Ingresa el 'ID #: ', del canditato al cual se le editara el carácter: '");
-                candidatoIDinCaracter = "ID #: " + Console.ReadLine().ToLower();
+                Console.Write("Ingresa el 'ID #: ', del canditato al cual se le editara el carácter: ");
+                candidatoIDinCaracter = "ID #: " + Console.ReadLine();
 
-                for (int i = 0; i < maxPets; i++ )
+                if (candidatoIDinCaracter != "ID #: ")
                 {
-                    if (ourAnimals[i,0] == candidatoIDinCaracter)
+                    for (int i = 0; i < maxPets; i++ )
                     {
-                        string valorCompletoDos = ourAnimals[i,3];
-                        string valorSinPrefijoDos = valorCompletoDos.Substring(6); // 6 es la longitud de "Mote: "
-                        Console.WriteLine($"Favor de indicar la edad correcta de {valorSinPrefijoDos}: ");
-                        newCaracter = "Carácter: " + Console.ReadLine().ToLower();
-                        ourAnimals[i,2] = newCaracter;
+                        if (ourAnimals[i,0] == candidatoIDinCaracter)
+                        {
+                            string valorCompletoDos = ourAnimals[i,3];
+                            string valorSinPrefijoDos = valorCompletoDos.Substring(6); // 6 es la longitud de "Mote: "
+                            Console.Write($"Favor de indicar la edad correcta de {valorSinPrefijoDos}: ");
+                            newCaracter = "Carácter: " + Console.ReadLine();
+                            ourAnimals[i,2] = newCaracter;
+                        }
                     }
                 }
+                else
+                {
+                    Console.WriteLine($"\nFavor de ingresar un ID válido.");
+                }
 
-                Console.WriteLine("¿Quieres editar el carácter de otro candidato? (y/n)");
-                continuarinCatacter = Console.ReadLine().ToLower();
+                Console.Write("¿Quieres editar el carácter de otro candidato? (y/n) -> ");
+                continuarinCatacter = Console.ReadLine();
                 if (continuarinCatacter == "n")
                 {
                     seguirEditandoCaracter = false;
@@ -420,28 +446,53 @@ do  //-> Ahora se crea un bucle 'do while', que se acaba hasta que el usuario in
 
         case "7":   // Gatos con caracteristica física especifica
             // Información de la caracteristica física: ourAnimals[i, 4] = "Description física: " + animalPhysicalDescription;
+    // Ahora también se suma éste array a la busqueda: ourAnimals[i, 5] = "Carácter: " + animalPersonalityDescription;
             bool seguirBuscandoGato = true;
-            string continuarBusquedainGato = "";
-            string cacteristicaGato = "";
+            string? continuarBusquedainGato = "";
+            string? caracteristicaGato;
+            string[] searchingIconsInCats = {"—", "\\", "|", "/"};
 
             do
             {
                 //Primero voy a pedirle a usuario que ingrese el ID del animal a editar la edad:
-                Console.WriteLine("Ingresa La caracteristica que quieres en tu gato: '");
-                cacteristicaGato = Console.ReadLine().ToLower();
+                Console.Write("Ingresa La caracteristica que quieres en tu gato: ");
+                caracteristicaGato = Console.ReadLine();
+                String[] arrayCaracteristicasGatos = caracteristicaGato.Split(',');
+                int gatoEncontrado = 0; // Variable designada al mensaje de "not found"
 
-                for (int i = 0; i < maxPets; i++ )
+                if (caracteristicaGato != "")
                 {
-                    if (ourAnimals[i,4].Contains(cacteristicaGato) && ourAnimals[i,0].Contains("ID #: c"))
+                    foreach (var palabra in arrayCaracteristicasGatos)
                     {
-                        string valorCompletoDos = ourAnimals[i,3];
-                        string valorSinPrefijoDos = valorCompletoDos.Substring(6); // 6 es la longitud de "Mote: "
-                        Console.WriteLine($"El gato {ourAnimals[i,0]}, con el Mote <{valorSinPrefijoDos}> coincide con tu criterio.");
+                        for (int i = 0; i < maxPets; i++ )
+                        {
+                            if (ourAnimals[i,0].Contains("ID #: c"))    // Bucle diseñado solo por cuestiones estéticas, solicitud del cliente ficticio jaja
+                            {
+                                foreach (var icon in searchingIconsInCats)
+                                {
+                                    Console.Write($"\rBuscando '{palabra}' en el minino con el {ourAnimals[i, 3]}. {icon}");
+                                    Thread.Sleep(200);
+                                }
+                            }
+                            if ( (ourAnimals[i,4].Contains(palabra) && ourAnimals[i,0].Contains("ID #: c")) || (ourAnimals[i,5].Contains(palabra) && ourAnimals[i,0].Contains("ID #: c")) )
+                            {
+                                gatoEncontrado++;   // not found count and reset
+                                Console.WriteLine($"\n\t\t\t\t|-> Nuestro michi {ourAnimals[i,0]}; con el {ourAnimals[i,3]}. Coincide con: " + palabra +".");
+                            }
+                        }
+                        if (gatoEncontrado == 0)    // not found section.
+                        {
+                            Console.WriteLine("\nNinguno de nuestros mininos cumple con esta caracteristica: " + palabra);
+                        }                           // not found section end
                     }
                 }
+                else
+                {
+                    Console.WriteLine("Añade una caracteristica a buscar.");
+                }
 
-                Console.WriteLine("¿Quieres buscar en otro candidato? (y/n)");
-                continuarBusquedainGato = Console.ReadLine().ToLower();
+                Console.Write("\n¿Quieres buscar en otro candidato? (y/n) -> ");
+                continuarBusquedainGato = Console.ReadLine();
                 if (continuarBusquedainGato == "n")
                 {
                     seguirBuscandoGato = false;
@@ -455,27 +506,52 @@ do  //-> Ahora se crea un bucle 'do while', que se acaba hasta que el usuario in
         case "8":   // Perros con caracteristica física especifica
             // Información de la caracteristica física: ourAnimals[i, 4] = "Description física: " + animalPhysicalDescription;
             bool seguirBuscandoPerro = true;
-            string continuarBusquedainPerro = "";
-            string cacteristicaPerro = "";
+            string? continuarBusquedainPerro = "";
+            string? caracteristicaPerro;    // Este string ahora debería de ser un String[] para almacenar varios valores, podría cambiar el nombre de caracteristicaPerro -> arrayCaracteristicaPerro, o algo así jajaja
+            string[] searchingIconsInDogs = {"—", "\\", "|", "/"};
 
             do
             {
                 //Primero voy a pedirle a usuario que ingrese el ID del animal a editar la edad:
-                Console.WriteLine("Ingresa La caracteristica que quieres en tu perro: '");
-                cacteristicaPerro = Console.ReadLine().ToLower();
+                Console.Write("Ingresa las caracteristica que quieres en tu perro separadas con coma: ");
+                caracteristicaPerro = Console.ReadLine();
+                String[] arrayCaracteristicasPerros = caracteristicaPerro.Split(',');
+                int perroEncontrado = 0;
 
-                for (int i = 0; i < maxPets; i++ )
+                if (caracteristicaPerro != "")
                 {
-                    if (ourAnimals[i,4].Contains(cacteristicaPerro) && ourAnimals[i,0].Contains("ID #: d"))
+                    foreach (var palabra in arrayCaracteristicasPerros)
                     {
-                        string valorCompletoDos = ourAnimals[i,3];
-                        string valorSinPrefijoDos = valorCompletoDos.Substring(6); // 6 es la longitud de "Mote: "
-                        Console.WriteLine($"El perro {ourAnimals[i,0]}, con el Mote <{valorSinPrefijoDos}> coincide con tu criterio.");
+                        for (int i = 0; i < maxPets; i++ )
+                        {
+                            if (ourAnimals[i,0].Contains("ID #: d"))
+                            {
+                                foreach (var icon in searchingIconsInDogs)
+                                {
+                                    Console.Write($"\rBuscando '{palabra}' en el perrito con el {ourAnimals[i, 3]}. {icon}");
+                                    Thread.Sleep(200);
+                                }
+                            }
+
+                            if ( (ourAnimals[i,4].Contains(palabra) && ourAnimals[i,0].Contains("ID #: d")) || (ourAnimals[i,5].Contains(palabra) && ourAnimals[i,0].Contains("ID #: d")) )
+                            {
+                                perroEncontrado++;
+                                Console.WriteLine($"\n\t\t\t\t|-> Nuestro perro {ourAnimals[i,0]}; con el {ourAnimals[i,3]}. Coincide con: " + palabra +".");
+                            }
+                        }
+                        if (perroEncontrado == 0)
+                        {
+                            Console.WriteLine("\nNinguno de nuestros lomitos cumple con esta caracteristica: " + palabra);
+                        }
                     }
                 }
+                else
+                {
+                    Console.WriteLine("Añade una caracterististica a buscar.");
+                }
 
-                Console.WriteLine("¿Quieres buscar en otro candidato? (y/n)");
-                continuarBusquedainPerro = Console.ReadLine().ToLower();
+                Console.Write("\n¿Quieres buscar en otro candidato? (y/n) -> ");
+                continuarBusquedainPerro = Console.ReadLine();
                 if (continuarBusquedainPerro == "n")
                 {
                     seguirBuscandoPerro = false;
